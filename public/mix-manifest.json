@@ -7,6 +7,9 @@
     "/js/ui.js": "/js/ui.js",
     "/js/responsive.js": "/js/responsive.js",
     "/js/error.js": "/js/error.js",
+    "/js/Office List.js": "/js/Office List.js",
+    "/js/Office Create.js": "/js/Office Create.js",
+    "/js/Office Update.js": "/js/Office Update.js",
     "/js/pagenotfound.js": "/js/pagenotfound.js",
     "/css/app.css": "/css/app.css"
 }

@@ -10,7 +10,9 @@ import {
   mdiViewList,
   mdiTelevisionGuide,
   mdiResponsive,
-  mdiPalette
+  mdiPalette,
+  mdiCog,
+  mdiOfficeBuildingMarker
 } from '@mdi/js'
 
 export default [
@@ -63,6 +65,21 @@ export default [
       to: '/admin/error',
       label: 'Error',
       icon: mdiAlertCircle
+    },
+    {
+      label: 'Settings',
+      subLabel: 'settings',
+      icon: mdiCog,
+      menu: [
+        {
+            to: '/admin/offices',
+            label: 'Offices',
+            icon: mdiOfficeBuildingMarker
+        },
+        {
+            label: 'Sub-item Two'
+        }
+      ]
     },
     {
       label: 'Submenus',

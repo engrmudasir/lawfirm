@@ -4,6 +4,7 @@ import axios from 'axios'
 import { darkModeKey, styleKey } from '@/config.js'
 import * as styles from '@/styles.js'
 import user from "./modules/user.js";
+import office from "./modules/office.js";
 
 export default createStore({
   state: {
@@ -134,6 +135,7 @@ export default createStore({
   },
   modules: {
     user,
+    office
   },
   plugins: [createPersistedState()]
 })

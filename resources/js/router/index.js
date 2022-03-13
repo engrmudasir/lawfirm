@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store'
 import Home from '@/views/Home.vue'
 import Admin from '@/views/Admin.vue'
+import Offices from '@/views/Offices.vue'
 import Dashboard from '@/views/Dashboard.vue'
 
 const routes = [
@@ -99,7 +100,42 @@ const routes = [
             path: 'error',
             name: 'error',
             component: () => import(/* webpackChunkName: "error" */ '@/views/Error.vue')
-          }
+          },
+          {
+            meta: {
+              title: 'Offices'
+            },
+            path: 'offices',
+            name: 'offices',
+            component: Offices,
+            children: [
+                {
+                    meta: {
+                      title: 'Offices'
+                    },
+                    path: '',
+                    name: 'List Offices',
+                    component: () => import(/* webpackChunkName: "Office List" */ '@/views/Offices/List.vue')
+                },
+                {
+                    meta: {
+                      title: 'Create Office'
+                    },
+                    path: 'new',
+                    name: 'Create Office',
+                    component: () => import(/* webpackChunkName: "Office Create" */ '@/views/Offices/Create.vue')
+                },
+                {
+                    meta: {
+                      title: 'Update Office'
+                    },
+                    path: ':id/update',
+                    name: 'Update Office',
+                    props: true,
+                    component: () => import(/* webpackChunkName: "Office Update" */ '@/views/Offices/Record.vue')
+                },
+            ]
+          },
     ]
   },
   {
@@ -123,14 +159,14 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    console.table(to)
+    // console.log(to)
+    // console.log(store.getters['user/user'])
     if (store.getters['user/user']) {
       if (to.matched.some(route => route.meta.guard === 'guest')){
         next({ name: 'home' })
       } else {
         next();
       }
-
     } else {
       if (to.matched.some(route => route.meta.guard === 'auth')){
         next({ name: 'login' })

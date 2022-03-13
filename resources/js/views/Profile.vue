@@ -19,8 +19,8 @@ const store = useStore()
 const titleStack = ref(['Admin', 'Profile'])
 
 const profileForm = reactive({
-  name: store.state.userName,
-  email: store.state.userEmail
+  name: store.state.user.user.name,
+  email: store.state.user.user.email
 })
 
 const passwordForm = reactive({

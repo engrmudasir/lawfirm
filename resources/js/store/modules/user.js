@@ -13,14 +13,16 @@ export default {
             state.user = payload;
         },
         user (state, payload) {
-            if (payload.name) {
-              state.userName = payload.name
-            }
-            if (payload.email) {
-              state.userEmail = payload.email
-            }
-            if (payload.avatar) {
-              state.userAvatar = payload.avatar
+            if(payload){
+                if (payload.name) {
+                    state.userName = payload.name
+                }
+                if (payload.email) {
+                    state.userEmail = payload.email
+                }
+                if (payload.avatar) {
+                    state.userAvatar = payload.avatar
+                }
             }
           }
     },
@@ -42,19 +44,12 @@ export default {
             try {
                 await axios.get('/sanctum/csrf-cookie');
 
-                await axios.post('/api/login', payload).then((res) => {
-                    return dispatch('getUser');
+                await axios.post('/api/login', payload).then((response) => {
+                    dispatch('getUser')
+                    return response
                 }).catch((err) => {
-                    throw err.response
+                    throw(err)
                 });
-                // const res = await axios.post('/api/login', payload);
-
-                // if (res.status != 200) throw res;
-
-                // if (res.data.status_code != 200) throw res.data.message;
-
-
-
             } catch (e) {
                 throw e
             }
@@ -74,20 +69,22 @@ export default {
             }
         },
         async logout({ commit }) {
-                await axios.post('/api/logout').then((res) => {
+                await axios.post('/api/logout').then(response => {
                     commit('setUser', null);
+                    commit('user', null);
+                    return response
                 }).catch((err) => {
-
+                    throw(err)
                 })
 
         },
         async getUser({commit}) {
             await axios.get('/api/user').then((res) => {
+                console.log(res.data)
                 commit('setUser', res.data);
                 commit('user', res.data);
-
             }).catch((err) => {
-
+                throw(err)
             })
         },
         async profile({commit},payload) {

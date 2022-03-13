@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-import { mdiMenu } from '@mdi/js'
+import { mdiMenu,mdiGavel } from '@mdi/js'
 import AsideMenuList from '@/components/AsideMenuList.vue'
 import NavBarItem from '@/components/NavBarItem.vue'
 import Icon from '@/components/Icon.vue'
@@ -63,7 +63,7 @@ const menuClick = (event, item) => {
         />
       </nav-bar-item>
       <div class="flex-1 px-3">
-        <span>Law</span> <b class="font-black">Firm</b>
+        <icon :path="mdiGavel"/><span>Law</span> <b class="font-black">Firm</b>
       </div>
     </div>
     <div>

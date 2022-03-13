@@ -11,9 +11,23 @@ const lightBorderStyle = computed(() => store.state.lightBorderStyle)
 
 const darkMode = computed(() => store.state.darkMode)
 
-const darkModeToggle = () => {
-  store.dispatch('darkMode')
-}
+// const darkModeToggle = () => {
+//   store.dispatch('darkMode')
+// }
+const props = defineProps({
+buttonLabel: {
+    type: [String],
+    default: null
+  },
+buttonIcon: {
+    type: [String],
+    default: null
+  },
+buttonTo: {
+    type: [String, Object],
+    default: null
+  },
+})
 </script>
 
 <template>
@@ -26,10 +40,11 @@ const darkModeToggle = () => {
         <slot />
       </h1>
       <jb-button
-        :label="darkMode ? 'Light Mode' : 'Dark Mode'"
-        :icon="mdiThemeLightDark"
+      v-if="buttonLabel || buttonIcon"
+        :label="buttonLabel"
+        :icon="buttonIcon"
         :outline="darkMode"
-        @click="darkModeToggle"
+        :to="buttonTo"
       />
     </level>
   </section>

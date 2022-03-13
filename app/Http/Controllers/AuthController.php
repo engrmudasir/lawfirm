@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
@@ -20,14 +21,14 @@ class AuthController extends Controller
         if (!$this->guard()->attempt($credentials)) {
             return response()->json([
                 'message' => 'The provided credentials are incorrect.'
-            ], 500);
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         $token = $this->guard()->user()->createToken('auth-token')->plainTextToken;
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer',
-        ], 200);
+        ], Response::HTTP_OK);
     }
 
 
@@ -37,9 +38,8 @@ class AuthController extends Controller
         $user->tokens()->delete();
         $this->guard()->logout();
         return response()->json([
-            'status_code' => '200',
             'message' => 'logged out successfully'
-        ]);
+        ],Response::HTTP_OK);
     }
 
     public function guard($guard = 'web')

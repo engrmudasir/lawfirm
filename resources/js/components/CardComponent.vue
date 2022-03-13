@@ -21,6 +21,10 @@ const props = defineProps({
     type: String,
     default: 'md:rounded'
   },
+  emptyLabel: {
+    type: String,
+    default: "Nothing's here…"
+  },
   hasTable: Boolean,
   empty: Boolean,
   form: Boolean,
@@ -98,7 +102,7 @@ const submit = e => {
       v-if="empty"
       class="text-center py-24 text-gray-500 dark:text-gray-400"
     >
-      <p>Nothing's here…</p>
+      <p>{{emptyLabel}}</p>
     </div>
     <div
       v-else

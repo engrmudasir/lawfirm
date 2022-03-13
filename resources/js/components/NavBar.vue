@@ -40,7 +40,7 @@ const isNavBarVisible = computed(() => !store.state.isFullScreen)
 
 const isAsideMobileExpanded = computed(() => store.state.isAsideMobileExpanded)
 
-const userName = computed(() => store.state.user.userName)
+const userName = computed(() => store.state.user.user ? store.state.user.user.name : null)
 
 const menuToggleMobileIcon = computed(() => isAsideMobileExpanded.value ? mdiBackburger : mdiForwardburger)
 
@@ -65,9 +65,22 @@ const $toast = useToast()
 const logout = async () => {
         busy.value = true
         try {
-            await store.dispatch('user/logout')
-            $toast.show({type: 'danger',message: 'You have logged out successfully'});
-            router.push({name:'login'})
+            await store.dispatch('user/logout').then((response) => {
+                $toast.show({type: 'danger',message: 'You have logged out successfully'});
+                router.push({ name:'login' })
+            }).catch(error => {
+                switch(error.response.status){
+                    case 401:
+                        $toast.show({type: 'info',message: 'You have logged out successfully'});
+                        store.commit('user/setUser', null);
+                        store.commit('user/user', null);
+                        router.push({ name:'login' })
+                        break;
+                    default:
+                        $toast.show({type: 'danger',message: 'You have an error while logging out'});
+                        break;
+                }
+            })
         }
         catch (e){
             errors.value = e.data
@@ -150,6 +163,17 @@ const logout = async () => {
             </nav-bar-item>
           </template>
         </nav-bar-menu>
+        <nav-bar-item
+          has-divider
+          is-desktop-icon-only
+          @click.prevent="toggleLightDark"
+        >
+          <nav-bar-item-label
+            :icon="mdiThemeLightDark"
+            label="Light/Dark"
+            is-desktop-icon-only
+          />
+        </nav-bar-item>
         <nav-bar-menu has-divider>
           <nav-bar-item-label :label="userName">
             <user-avatar class="w-6 h-6 mr-3 inline-flex" />
@@ -183,28 +207,7 @@ const logout = async () => {
             </nav-bar-item>
           </template>
         </nav-bar-menu>
-        <nav-bar-item
-          has-divider
-          is-desktop-icon-only
-          @click.prevent="toggleLightDark"
-        >
-          <nav-bar-item-label
-            :icon="mdiThemeLightDark"
-            label="Light/Dark"
-            is-desktop-icon-only
-          />
-        </nav-bar-item>
-        <nav-bar-item
-          href="https://github.com/justboil/admin-one-vue-tailwind"
-          has-divider
-          is-desktop-icon-only
-        >
-          <nav-bar-item-label
-            :icon="mdiGithub"
-            label="GitHub"
-            is-desktop-icon-only
-          />
-        </nav-bar-item>
+
         <nav-bar-item is-desktop-icon-only @click="logout">
           <nav-bar-item-label
             :icon="mdiLogout"

@@ -24,13 +24,13 @@ defineProps({
           {{ title }}
         </li>
       </ul>
-      <jb-button
+      <!-- <jb-button
         href="https://mnmalik.com"
         color="info"
         label="Profile"
         target="_blank"
         :icon="mdiGithub"
-      />
+      /> -->
     </level>
   </section>
 </template>

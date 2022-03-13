@@ -10,6 +10,8 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerificationController;
+use App\Http\Controllers\Api\OfficeController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +46,12 @@ Route::middleware('auth:sanctum')->group(function () {
     // in app verification
     // Route::post('/verify-email/{id}/{hash}', [VerificationController::class, 'verify'])->name('verify');
     // Route::post('/verify-resend', [VerificationController::class, 'resend']);
+
+
+
+    //Offices routes
+    Route::apiResource('offices', OfficeController::class);
+
 
 
 });

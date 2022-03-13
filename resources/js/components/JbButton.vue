@@ -2,8 +2,12 @@
 import { computed } from 'vue'
 import { getButtonColor } from '@/colors.js'
 import Icon from '@/components/Icon.vue'
-
+import LoadingIcon from '@/components/LoadingIcon.vue'
 const props = defineProps({
+  busy: {
+    type: Boolean,
+    default: false
+  },
   label: {
     type: [String, Number],
     default: null
@@ -81,6 +85,7 @@ const componentClass = computed(() => {
     'duration-150',
     'border',
     'rounded',
+    'disabled:cursor-progress',
     props.active ? 'ring ring-black dark:ring-white' : 'ring-blue-700',
     props.small ? 'p-1' : 'p-2',
     getButtonColor(props.color, props.outline, !props.disabled)
@@ -108,9 +113,10 @@ const componentClass = computed(() => {
       v-if="icon"
       :path="icon"
     />
-    <span
+  <span
       v-if="label"
       :class="labelClass"
     >{{ label }}</span>
+    <loading-icon v-if="busy" />
   </component>
 </template>

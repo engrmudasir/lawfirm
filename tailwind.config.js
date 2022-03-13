@@ -31,11 +31,17 @@ module.exports = {
             fadeIn: {
               from: { opacity: 0 },
               to: { opacity: 1 }
+            },
+            spin: {
+                from: { transform: 'rotate(0deg)' },
+                to: { transform: 'rotate(360deg)' },
             }
           },
           animation: {
             fadeOut: 'fadeOut 250ms ease-in-out',
-            fadeIn: 'fadeIn 250ms ease-in-out'
+            fadeIn: 'fadeIn 250ms ease-in-out',
+            'animate-spin': 'spin 1s linear infinite',
+            'spin-slow': 'spin 3s linear infinite',
           }
     },
   },
