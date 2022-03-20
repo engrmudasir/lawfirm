@@ -9,6 +9,14 @@ defineProps({
   help: {
     type: String,
     default: null
+  },
+  info: {
+    type: String,
+    default: null
+  },
+  error: {
+    type: String,
+    default: null
   }
 })
 
@@ -44,6 +52,18 @@ const wrapperClass = computed(() => {
       class="text-xs text-gray-500 dark:text-gray-400 mt-1"
     >
       {{ help }}
+    </div>
+    <div
+      v-if="info"
+      class="text-xs text-blue-500 dark:text-blue-400 mt-1"
+    >
+      {{ info }}
+    </div>
+    <div
+      v-else-if="error"
+      class="text-xs text-red-500 dark:text-red-400 mt-1"
+    >
+      {{ error }}
     </div>
   </div>
 </template>

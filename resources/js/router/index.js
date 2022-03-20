@@ -3,6 +3,8 @@ import store from '@/store'
 import Home from '@/views/Home.vue'
 import Admin from '@/views/Admin.vue'
 import Offices from '@/views/Offices.vue'
+import Roles from '@/views/Roles.vue'
+import Users from '@/views/Users.vue'
 import Dashboard from '@/views/Dashboard.vue'
 
 const routes = [
@@ -136,6 +138,59 @@ const routes = [
                 },
             ]
           },
+          {
+            meta: {
+              title: 'Roles'
+            },
+            path: 'roles',
+            name: 'roles',
+            component: Roles,
+            children: [
+                {
+                    meta: {
+                      title: 'Roles'
+                    },
+                    path: '',
+                    name: 'List Roles',
+                    component: () => import(/* webpackChunkName: "Role List" */ '@/views/Roles/List.vue')
+                }
+            ]
+          },
+          {
+            meta: {
+              title: 'Users'
+            },
+            path: 'users',
+            name: 'users',
+            component: Users,
+            children: [
+                {
+                    meta: {
+                      title: 'Users'
+                    },
+                    path: '',
+                    name: 'List Users',
+                    component: () => import(/* webpackChunkName: "Users List" */ '@/views/Users/List.vue')
+                },
+                {
+                    meta: {
+                      title: 'Create User'
+                    },
+                    path: 'new',
+                    name: 'Create User',
+                    component: () => import(/* webpackChunkName: "User Create" */ '@/views/Users/Create.vue')
+                },
+                {
+                    meta: {
+                      title: 'Update User'
+                    },
+                    path: ':id/update',
+                    name: 'Update User',
+                    props: true,
+                    component: () => import(/* webpackChunkName: "User Update" */ '@/views/Users/Record.vue')
+                },
+            ]
+          },
     ]
   },
   {
@@ -160,8 +215,8 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     // console.log(to)
-    // console.log(store.getters['user/user'])
-    if (store.getters['user/user']) {
+    // console.log(store.getters['auth/user'])
+    if (store.getters['auth/user']) {
       if (to.matched.some(route => route.meta.guard === 'guest')){
         next({ name: 'home' })
       } else {

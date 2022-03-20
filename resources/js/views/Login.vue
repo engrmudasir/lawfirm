@@ -28,9 +28,9 @@ const $modal = useModal()
 const submit = async () => {
         busy.value = true
         try {
-            await store.dispatch('user/login' , form)
+            await store.dispatch('auth/login' , form)
             .then((response) => {
-                store.dispatch('user/getUser').then((res) => {
+                store.dispatch('auth/getUser').then((res) => {
                     console.log(res)
                     $toast.show({type: 'success',message: 'Successfully Logged In'});
                     router.push('/admin/dashboard')

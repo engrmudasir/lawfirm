@@ -3,8 +3,10 @@ import createPersistedState from "vuex-persistedstate"
 import axios from 'axios'
 import { darkModeKey, styleKey } from '@/config.js'
 import * as styles from '@/styles.js'
-import user from "./modules/user.js";
+import auth from "./modules/auth.js";
 import office from "./modules/office.js";
+import user from "./modules/user.js";
+import role from "./modules/role.js";
 
 export default createStore({
   state: {
@@ -134,8 +136,10 @@ export default createStore({
     }
   },
   modules: {
+    auth,
     user,
-    office
+    office,
+    role
   },
   plugins: [createPersistedState()]
 })

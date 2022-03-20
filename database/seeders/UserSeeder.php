@@ -19,9 +19,11 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $role = Role::create(['name' => 'Super Admin']);
+        $role_super_admin = Role::create(['name' => 'Super Admin']);
+        $role = Role::create(['name' => 'Admin']);
+        $role = Role::create(['name' => 'Manager']);
         DB::table('users')->insert([
-            'name' => Str::random(10),
+            'name' => 'Super Admin',
             'email' => 'super@lawfirm.com',
             'password' => Hash::make('password'),
         ]);

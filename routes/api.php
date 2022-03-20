@@ -8,9 +8,11 @@ use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ResetPasswordController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthUserController;
 use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\Api\OfficeController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\RoleController;
 
 
 /*
@@ -40,7 +42,7 @@ Route::post('/verify-resend', [VerificationController::class, 'resend']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::patch('/profile', ProfileController::class);
     Route::patch('/password', PasswordController::class);
-    Route::get('/user', UserController::class);
+    Route::get('/user', AuthUserController::class);
     Route::post('/logout', [AuthController::class, 'logout']);
 
     // in app verification
@@ -51,6 +53,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //Offices routes
     Route::apiResource('offices', OfficeController::class);
+    //Users routes
+    Route::apiResource('users', UserController::class);
+    //Roles routes
+    Route::apiResource('roles', RoleController::class);
 
 
 

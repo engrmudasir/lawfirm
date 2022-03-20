@@ -58,6 +58,33 @@ export default function useOffices() {
                     for (const key in error.response.data.errors) {
                         errors.value += error.response.data.errors[key][0] + ' ';
                     }
+                } else {
+                    switch(error.response.status){
+                        case 500:
+                            $modal.show({
+                                    type: 'danger',
+                                    title: 'Server Error',
+                                    body: error.response.data.message,
+                                    primary: {
+                                        label: 'Ok',
+                                        theme: 'red',
+                                        action: () => false,
+                                    },
+                                    })
+                            break;
+                        default:
+                            $modal.show({
+                                    type: 'danger',
+                                    title: 'Server Error',
+                                    body: 'There is some Server Error.',
+                                    primary: {
+                                        label: 'Ok',
+                                        theme: 'red',
+                                        action: () => false,
+                                    }
+                                    })
+                            break;
+                    }
                 }
                 // if (error.response.status === 500) {
                 //     $modal.show({
@@ -71,32 +98,7 @@ export default function useOffices() {
                 //         }
                 //         })
                 // }
-                switch(error.response.status){
-                    case 500:
-                        $modal.show({
-                                type: 'danger',
-                                title: 'Server Error',
-                                body: error.response.data.message,
-                                primary: {
-                                    label: 'Ok',
-                                    theme: 'red',
-                                    action: () => false,
-                                },
-                                })
-                        break;
-                    default:
-                        $modal.show({
-                                type: 'danger',
-                                title: 'Server Error',
-                                body: 'There is some Server Error.',
-                                primary: {
-                                    label: 'Ok',
-                                    theme: 'red',
-                                    action: () => false,
-                                }
-                                })
-                        break;
-                }
+
             })
 
             // await axios.post('/api/offices', data)
@@ -124,6 +126,33 @@ export default function useOffices() {
                     for (const key in error.response.data.errors) {
                         errors.value += error.response.data.errors[key][0] + ' ';
                     }
+                } else {
+                    switch(error.response.status){
+                        case 500:
+                            $modal.show({
+                                    type: 'danger',
+                                    title: 'Server Error',
+                                    body: error.response.data.message,
+                                    primary: {
+                                        label: 'Ok',
+                                        theme: 'red',
+                                        action: () => false,
+                                    },
+                                    })
+                            break;
+                        default:
+                            $modal.show({
+                                    type: 'danger',
+                                    title: 'Server Error',
+                                    body: 'There is some Server Error.',
+                                    primary: {
+                                        label: 'Ok',
+                                        theme: 'red',
+                                        action: () => false,
+                                    }
+                                    })
+                            break;
+                    }
                 }
                 // if (error.response.status === 500) {
                 //     $modal.show({
@@ -137,32 +166,7 @@ export default function useOffices() {
                 //         }
                 //         })
                 // }
-                switch(error.response.status){
-                    case 500:
-                        $modal.show({
-                                type: 'danger',
-                                title: 'Server Error',
-                                body: error.response.data.message,
-                                primary: {
-                                    label: 'Ok',
-                                    theme: 'red',
-                                    action: () => false,
-                                },
-                                })
-                        break;
-                    default:
-                        $modal.show({
-                                type: 'danger',
-                                title: 'Server Error',
-                                body: 'There is some Server Error.',
-                                primary: {
-                                    label: 'Ok',
-                                    theme: 'red',
-                                    action: () => false,
-                                }
-                                })
-                        break;
-                }
+
 
             })
         } catch (e) {

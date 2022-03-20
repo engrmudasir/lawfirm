@@ -9,7 +9,7 @@ import Overlay from '@/components/Overlay.vue'
 
 const store = useStore()
 
-// store.commit('user/user', {
+// store.commit('auth/user', {
 //   name: 'John Doe',
 //   email: 'john@example.com',
 //   avatar: 'https://avatars.dicebear.com/api/avataaars/example.svg?options[top][]=shortHair&options[accessoriesChance]=93'

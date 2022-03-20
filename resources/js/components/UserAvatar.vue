@@ -19,7 +19,7 @@ const lightBgStyle = computed(() => store.state.lightBgStyle)
 
 const avatar = computed(() => props.username
   ? `https://avatars.dicebear.com/${props.api}/${props.username.replace(/[^a-z0-9]+/i, '-')}.svg`
-  : store.state.user.userAvatar)
+  : store.state.auth.userAvatar)
 
 const name = computed(() => props.username ? props.username : store.state.userName)
 </script>

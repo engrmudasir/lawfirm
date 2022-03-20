@@ -2,6 +2,7 @@ import {
   mdiAccountCircle,
   mdiDesktopMac,
   mdiGithub,
+  mdiAccountGroup,
   mdiLock,
   mdiAlertCircle,
   mdiMonitorShimmer,
@@ -67,6 +68,11 @@ export default [
       icon: mdiAlertCircle
     },
     {
+      to: '/admin/users',
+      label: 'Users',
+      icon: mdiAccountGroup
+    },
+    {
       label: 'Settings',
       subLabel: 'settings',
       icon: mdiCog,
@@ -77,7 +83,9 @@ export default [
             icon: mdiOfficeBuildingMarker
         },
         {
-            label: 'Sub-item Two'
+            to: '/admin/roles',
+            label: 'Roles',
+            icon: mdiOfficeBuildingMarker
         }
       ]
     },

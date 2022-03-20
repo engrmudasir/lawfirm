@@ -10,7 +10,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
-
+use App\Models\Scopes\ExcludeSuperAdminUsersScope;
+use App\Models\Scopes\OfficeScope;
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasRoles, HasApiTokens, HasFactory, Notifiable;
@@ -26,6 +27,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'last_login_at',
         'last_login_ip',
+        'office_id'
     ];
 
     /**
@@ -46,9 +48,24 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected $with = ['roles', 'permissions'];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new ExcludeSuperAdminUsersScope);
+        static::addGlobalScope(new OfficeScope);
+    }
+
     public function office()
     {
-        return $this->hasOne(Office::class);
+        return $this->belongsTo(Office::class);
+    }
+    public function isSuperAdmin()
+    {
+        return $this->roles()->first()->name == 'Super Admin' ? true : false;
     }
 
     public function sendPasswordResetNotification($token)

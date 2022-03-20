@@ -4,11 +4,13 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import { darkModeKey, styleKey } from '@/config.js'
+import { useToast, useModal } from 'tailvue'
 
 import '../css/app.css'
 
 require('@/bootstrap')
 window.Vue = require('vue').default;
+const $toast = useToast()
 axios.defaults.withCredentials = true;
 /* Fetch sample data */
 store.dispatch('fetch', 'clients')
@@ -42,6 +44,25 @@ router.afterEach(to => {
   /* Full screen mode */
   store.dispatch('fullScreenToggle', !!to.meta.fullScreen)
 })
+
+
+/*
+ Axios Interceptors
+ */
+ const UNAUTHORIZED = 401;
+ axios.interceptors.response.use(
+   response => response,
+   error => {
+     const {status} = error.response;
+     if (status === UNAUTHORIZED) {
+        $toast.show({type: 'info',message: 'Your Login Session was expired, please Login!'});
+        store.commit('auth/setUser', null);
+        store.commit('auth/user', null);
+        router.push({ name:'login' })
+     }
+     return Promise.reject(error);
+  }
+ );
 
 createApp(App)
 .use(store)

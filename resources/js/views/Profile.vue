@@ -1,7 +1,8 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import { useStore } from 'vuex'
-import { mdiAccount, mdiAccountCircle, mdiLock, mdiMail, mdiAsterisk, mdiFormTextboxPassword } from '@mdi/js'
+import { mdiAccount, mdiAlertCircle,mdiAccountCircle, mdiLock, mdiMail, mdiAsterisk, mdiFormTextboxPassword } from '@mdi/js'
+import Notification from '@/components/Notification.vue'
 import MainSection from '@/components/MainSection.vue'
 import CardComponent from '@/components/CardComponent.vue'
 import TitleBar from '@/components/TitleBar.vue'
@@ -14,13 +15,16 @@ import BottomOtherPagesSection from '@/components/BottomOtherPagesSection.vue'
 import JbButtons from '@/components/JbButtons.vue'
 import UserCard from '@/components/UserCard.vue'
 
+import useProfile from '@/composables/profile'
+
 const store = useStore()
+const { errors, updatePassword ,updateProfile } = useProfile()
 
 const titleStack = ref(['Admin', 'Profile'])
-
+const busy = ref(false);
 const profileForm = reactive({
-  name: store.state.user.user.name,
-  email: store.state.user.user.email
+  name: store.state.auth.user.name,
+  email: store.state.auth.user.email
 })
 
 const passwordForm = reactive({
@@ -29,12 +33,27 @@ const passwordForm = reactive({
   password_confirmation: ''
 })
 
-const submitProfile = () => {
-  store.commit('user', profileForm)
+const submitProfile = async () => {
+//   store.commit('user', profileForm)
+  busy.value = true
+    try {
+        await updateProfile({ ...profileForm })
+    } catch (e) {
+        console.log("Error on Updating Profile")
+        console.log(e)
+    }
+  busy.value = false
 }
 
-const submitPass = () => {
-  //
+const submitPass = async () => {
+    busy.value = true
+    try {
+        await updatePassword({ ...passwordForm })
+    } catch (e) {
+        console.log("Error on Updating Password")
+        console.log(e)
+    }
+  busy.value = false
 }
 </script>
 
@@ -44,6 +63,13 @@ const submitPass = () => {
   <user-card />
 
   <main-section>
+      <notification
+      color="danger"
+      :icon="mdiAlertCircle"
+      v-if="errors"
+    >
+      {{errors}}
+    </notification>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <card-component
         title="Edit Profile"
@@ -51,12 +77,12 @@ const submitPass = () => {
         form
         @submit.prevent="submitProfile"
       >
-        <field
+        <!-- <field
           label="Avatar"
           help="Max 500kb"
         >
           <file-picker />
-        </field>
+        </field> -->
 
         <field
           label="Name"
@@ -65,14 +91,15 @@ const submitPass = () => {
           <control
             v-model="profileForm.name"
             :icon="mdiAccount"
-            name="username"
+            name="name"
             required
-            autocomplete="username"
+            autocomplete="name"
+            :disabled="busy"
           />
         </field>
         <field
           label="E-mail"
-          help="Required. Your e-mail"
+          help="Your e-mail can not be changed."
         >
           <control
             v-model="profileForm.email"
@@ -81,6 +108,7 @@ const submitPass = () => {
             name="email"
             required
             autocomplete="email"
+            disabled
           />
         </field>
 
@@ -91,12 +119,14 @@ const submitPass = () => {
             color="info"
             type="submit"
             label="Submit"
+            :busy="busy"
+            :disabled="busy"
           />
-          <jb-button
+          <!-- <jb-button
             color="info"
             label="Options"
             outline
-          />
+          /> -->
         </jb-buttons>
       </card-component>
 
@@ -133,6 +163,7 @@ const submitPass = () => {
             type="password"
             required
             autocomplete="new-password"
+            :disabled="busy"
           />
         </field>
 
@@ -147,6 +178,7 @@ const submitPass = () => {
             type="password"
             required
             autocomplete="new-password"
+          :disabled="busy"
           />
         </field>
 
@@ -157,12 +189,14 @@ const submitPass = () => {
             type="submit"
             color="info"
             label="Submit"
+            :busy="busy"
+            :disabled="busy"
           />
-          <jb-button
+          <!-- <jb-button
             color="info"
             label="Options"
             outline
-          />
+          /> -->
         </jb-buttons>
       </card-component>
     </div>

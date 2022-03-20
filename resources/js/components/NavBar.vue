@@ -40,7 +40,7 @@ const isNavBarVisible = computed(() => !store.state.isFullScreen)
 
 const isAsideMobileExpanded = computed(() => store.state.isAsideMobileExpanded)
 
-const userName = computed(() => store.state.user.user ? store.state.user.user.name : null)
+const userName = computed(() => store.state.auth.user ? store.state.auth.user.name : null)
 
 const menuToggleMobileIcon = computed(() => isAsideMobileExpanded.value ? mdiBackburger : mdiForwardburger)
 
@@ -65,15 +65,15 @@ const $toast = useToast()
 const logout = async () => {
         busy.value = true
         try {
-            await store.dispatch('user/logout').then((response) => {
+            await store.dispatch('auth/logout').then((response) => {
                 $toast.show({type: 'danger',message: 'You have logged out successfully'});
                 router.push({ name:'login' })
             }).catch(error => {
                 switch(error.response.status){
                     case 401:
                         $toast.show({type: 'info',message: 'You have logged out successfully'});
-                        store.commit('user/setUser', null);
-                        store.commit('user/user', null);
+                        store.commit('auth/setUser', null);
+                        store.commit('auth/user', null);
                         router.push({ name:'login' })
                         break;
                     default:

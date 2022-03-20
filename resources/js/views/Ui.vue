@@ -442,7 +442,7 @@ const darkModeToggle = () => {
   <titled-section>Cards</titled-section>
 
   <main-section>
-    <div class="grid grid-cols-1 gap-6 mb-6 lg:grid-cols-2 ">
+    <div class="grid grid-cols-1 gap-6 mb-6 lg:grid-cols-2">
       <card-component
         title="With Title"
         mb=""

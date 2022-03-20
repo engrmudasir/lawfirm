@@ -10,6 +10,10 @@
     "/js/Office List.js": "/js/Office List.js",
     "/js/Office Create.js": "/js/Office Create.js",
     "/js/Office Update.js": "/js/Office Update.js",
+    "/js/Role List.js": "/js/Role List.js",
+    "/js/Users List.js": "/js/Users List.js",
+    "/js/User Create.js": "/js/User Create.js",
+    "/js/User Update.js": "/js/User Update.js",
     "/js/pagenotfound.js": "/js/pagenotfound.js",
     "/css/app.css": "/css/app.css"
 }

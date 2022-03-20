@@ -32,6 +32,10 @@ const props = defineProps({
     type: String,
     default: 'text'
   },
+  defaultOptionText: {
+    type: String,
+    default: null
+  },
   modelValue: {
     type: [String, Number, Boolean, Array, Object],
     default: ''
@@ -40,7 +44,7 @@ const props = defineProps({
   borderless: Boolean,
   transparent: Boolean,
   ctrlKFocus: Boolean,
-  disabled: Boolean
+  disabled: Boolean,
 })
 
 const emit = defineEmits(['update:modelValue', 'right-icon-click'])
@@ -118,13 +122,20 @@ if (props.ctrlKFocus) {
       v-model="computedValue"
       :name="name"
       :class="inputElClass"
+       placeholder="Select"
+       :disabled="disabled"
     >
+      <option
+        value=""
+      >
+        {{ defaultOptionText ?? 'Select Option'}}
+      </option>
       <option
         v-for="option in options"
         :key="option.id ?? option"
-        :value="option"
+        :value="option.id ?? option"
       >
-        {{ option.label ?? option }}
+        {{ option.label ?? option.name }}
       </option>
     </select>
     <textarea
@@ -135,6 +146,7 @@ if (props.ctrlKFocus) {
       :name="name"
       :placeholder="placeholder"
       :required="required"
+      :disabled="disabled"
     />
     <input
       v-else
