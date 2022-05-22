@@ -35,6 +35,9 @@ module.exports = {
             spin: {
                 from: { transform: 'rotate(0deg)' },
                 to: { transform: 'rotate(360deg)' },
+            },
+            ping: {
+                '75%, 100%': { transform: 'scale(2)', transform: 0 }
             }
           },
           animation: {
@@ -42,6 +45,7 @@ module.exports = {
             fadeIn: 'fadeIn 250ms ease-in-out',
             'animate-spin': 'spin 1s linear infinite',
             'spin-slow': 'spin 3s linear infinite',
+            'animate-ping': '1s cubic-bezier(0, 0, 0.2, 1) infinite'
           }
     },
   },

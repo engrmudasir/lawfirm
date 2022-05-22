@@ -2,34 +2,19 @@
 import { ref, onMounted, computed, watch } from 'vue'
 import moment from 'moment'
 import { useStore } from 'vuex'
-import {  mdiLeadPencil, mdiEye, mdiTrashCan, mdiMonitorCellphone, mdiAccountMultiple, mdiTableBorder, mdiTableOff, mdiPlus,
-  mdiSelectColor,
-  mdiFeather,
-  mdiInformationOutline,
-  mdiCheckCircleOutline,
-  mdiAlertCircle,
-  mdiAlertCircleOutline,
-  mdiOpenInNew,
-  mdiClose } from '@mdi/js'
+import {  mdiLeadPencil, mdiEye, mdiTrashCan, mdiMonitorCellphone, mdiAccountMultiple, mdiTableBorder, mdiTableOff, mdiPlus } from '@mdi/js'
 import MainSection from '@/components/MainSection.vue'
 import Notification from '@/components/Notification.vue'
 import CardComponent from '@/components/CardComponent.vue'
 import TitleBar from '@/components/TitleBar.vue'
 import HeroBar from '@/components/HeroBar.vue'
 import TitleSubBar from '@/components/TitleSubBar.vue'
-import TitledSection from '@/components/TitledSection.vue'
-import CheckRadioPicker from '@/components/CheckRadioPicker.vue'
-import Field from '@/components/Field.vue'
-import Control from '@/components/Control.vue'
-import Divider from '@/components/Divider.vue'
 
 import ModalBox from '@/components/ModalBox.vue'
 import CheckboxCell from '@/components/CheckboxCell.vue'
 import Level from '@/components/Level.vue'
 import JbButtons from '@/components/JbButtons.vue'
 import JbButton from '@/components/JbButton.vue'
-import UserAvatar from '@/components/UserAvatar.vue'
-
 
 import { useModal } from 'tailvue'
 
@@ -37,15 +22,13 @@ import useRoles from '@/composables/roles'
 
 const titleStack = ref(['Admin', 'Roles'])
 
-const buttonSettingsModel = ref([])
-
 const store = useStore()
 
 // const $toast = useToast()
 const $modal = useModal()
 
 const { roles, getRoles, destroyRole } = useRoles()
-const checkable = ref(true)
+const checkable = ref(false)
 onMounted(getRoles)
 
 const deleteRole = async (id) => {
@@ -84,7 +67,6 @@ const darkMode = computed(() => store.state.darkMode)
 // const items = computed(() => store.state.clients)
 const items = roles
 
-const openTab = ref(0)
 const isModalActive = ref(false)
 
 const isModalDangerActive = ref(false)
@@ -138,18 +120,18 @@ const empty = computed(() => {
 })
 
 const dateFormat = (date) => {
-    return moment(date).format(" MMMM Do YYYY")
-}
-
-const toggleTabs = (tabNumber) => {
-    return openTab.value = tabNumber
+    return moment(date).format(" MMMM Do, YYYY")
 }
 
 </script>
 
 <template>
   <title-bar :title-stack="titleStack" />
-  <hero-bar>Roles List</hero-bar>
+  <hero-bar
+  buttonLabel="Add New"
+  :buttonIcon="mdiPlus"
+  buttonTo="/admin/roles/new"
+  >Roles List</hero-bar>
   <main-section>
     <card-component
       class="mb-6"
@@ -157,31 +139,98 @@ const toggleTabs = (tabNumber) => {
       :empty="empty"
       emptyLabel="No Roles Found..."
     >
+    <!-- Records Table -->
+      <!-- Actions Modals -->
+      <modal-box
+    v-model="isModalActive"
+    title="View Modal"
+  >
+    <p>Lorem ipsum dolor sit amet <b>adipiscing elit</b></p>
+    <p>This is sample modal</p>
+  </modal-box>
 
-  <ul class="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row">
-        <li class="-mb-px mr-2 last:mr-0 flex-auto text-center" v-for="(tab,index) in items" :key="index">
-          <a class="text-xs font-bold uppercase px-3 py-3 shadow-lg rounded block leading-normal cursor-pointer border" v-on:click="toggleTabs(index)" v-bind:class="{'text-indigo-600 bg-white': openTab !== index, 'text-white bg-indigo-600': openTab === index}">
-            {{tab.name}}
-          </a>
-        </li>
-      </ul>
+  <modal-box
+    v-model="isModalDangerActive"
+    large-title="Please confirm"
+    button="danger"
+    has-cancel
+  >
+    <p>Lorem ipsum dolor sit amet <b>adipiscing elit</b></p>
+    <p>This is sample modal</p>
+  </modal-box>
+  <!-- End Actions Modal -->
 
-      <div v-bind:class="{'hidden': openTab !== index, 'block': openTab === index}" v-for="(tab,index) in items" :key="index">
-                <!-- Tab Contents -->
-               <!-- <titled-section>Buttons</titled-section> -->
- {{tab}}
-                <main-section>
-                    <div class="grid grid-cols-1 gap-6 mb-6 lg:grid-cols-4">
-                    <check-radio-picker
-                        v-model="buttonSettingsModel"
-                        name="buttons-switch"
-                        type="switch"
-                        :options="tab"
-                        />
-                    </div>
-                </main-section>
-                <!-- End Tab Contents -->
-            </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Created</th>
+        <th />
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        v-for="(role, index) in itemsPaginated"
+        :key="role.id"
+        :class="[tableTrStyle, index % 2 === 0 ? tableTrOddStyle : '']"
+      >
+        <td data-label="Name">
+          {{ role.name }}
+        </td>
+
+        <td data-label="Created">
+          <small
+            class="text-gray-500 dark:text-gray-400"
+            :title="dateFormat(role.created_at)"
+          >{{ dateFormat(role.created_at) }}</small>
+        </td>
+        <td class="actions-cell">
+          <jb-buttons
+            type="justify-start lg:justify-end"
+            no-wrap
+          >
+            <jb-button
+              color="success"
+              :icon="mdiLeadPencil"
+              small
+              :to="{ name: 'Update Role', params: { id: role.id } }"
+            />
+            <jb-button
+              color="info"
+              :icon="mdiEye"
+              small
+              @click="isModalActive = true"
+            />
+            <jb-button
+              color="danger"
+              :icon="mdiTrashCan"
+              small
+              @click="deleteRole(role.id)"
+            />
+          </jb-buttons>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div
+    :class="lightBorderStyle"
+    class="p-3 lg:px-6 border-t dark:border-gray-800"
+  >
+    <level>
+      <jb-buttons>
+        <jb-button
+          v-for="page in pagesList"
+          :key="page"
+          :active="page === currentPage"
+          :label="page + 1"
+          :outline="darkMode"
+          small
+          @click="currentPage = page"
+        />
+      </jb-buttons>
+      <small>Page {{ currentPageHuman }} of {{ numPages }}</small>
+    </level>
+  </div>
   <!-- Ends Records Table -->
     </card-component>
   </main-section>

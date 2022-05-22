@@ -11,6 +11,15 @@ use App\Http\Resources\RoleResource;
 
 class RoleController extends Controller
 {
+
+    function __construct()
+    {
+         $this->middleware('permission:list roles|create roles|update roles|delete roles|list users|create users|update users', ['only' => ['index','show']]);
+         $this->middleware('permission:create roles', ['only' => ['create','store']]);
+         $this->middleware('permission:update roles', ['only' => ['edit','update']]);
+         $this->middleware('permission:delete roles', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -40,7 +49,9 @@ class RoleController extends Controller
         // sleep(300);
 
         try{
-            $role = Role::create($request->validated());
+            $form = $request->validated();
+            $role = Role::create($form);
+            $role->syncPermissions($form["permissions"]);
 
             return new RoleResource($role);
         } catch(\Exception $e){
@@ -78,8 +89,10 @@ class RoleController extends Controller
     {
         //
         try{
+            $form = $request->validated();
+            $role->update($form);
+            $role->syncPermissions($form["permissions"]);
 
-            $role->update($request->validated());
 
             return new RoleResource($role);
 

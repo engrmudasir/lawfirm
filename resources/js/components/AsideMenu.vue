@@ -28,11 +28,11 @@ const isFullScreen = computed(() => store.state.isFullScreen)
 const isAsideMobileExpanded = computed(() => store.state.isAsideMobileExpanded)
 
 const isAsideLgActive = computed(() => store.state.isAsideLgActive)
+const user_id = computed(() => store.state.auth.user ? store.state.auth.user.id : 0 )
 
 const asideLgClose = () => {
   store.dispatch('asideLgToggle', false)
 }
-
 const menuClick = (event, item) => {
   //
 }
@@ -45,6 +45,7 @@ const menuClick = (event, item) => {
     class="w-60 fixed top-0 z-40 h-screen transition-position lg:left-0
     dark:border-r dark:border-gray-800 dark:bg-gray-900/70 lg:dark:bg-gray-900 xl:dark:bg-gray-900/70"
     :class="[ asideStyle, isAsideMobileExpanded ? 'left-0' : '-left-60', isAsideLgActive ? 'block' : 'lg:hidden xl:block' ]"
+    :key="user_id"
   >
     <div
       class="flex flex-row w-full flex-1 h-14 items-center dark:bg-transparent"

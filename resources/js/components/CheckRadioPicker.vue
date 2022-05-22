@@ -3,7 +3,7 @@ import { computed } from 'vue'
 
 const props = defineProps({
   options: {
-    type: Object,
+    type: [Object, Array],
     default: () => {}
   },
   name: {
@@ -31,6 +31,12 @@ const computedValue = computed({
 })
 
 const inputType = computed(() => props.type === 'radio' ? 'radio' : 'checkbox')
+
+const isArray = (check) => {
+   return _.isArray(check)
+}
+
+
 </script>
 
 <template>
@@ -38,7 +44,26 @@ const inputType = computed(() => props.type === 'radio' ? 'radio' : 'checkbox')
     class="flex justify-start flex-wrap -mb-3"
     :class="{'flex-col':column}"
   >
-    <label
+  <div class="grid grid-cols-1 gap-3 md:grid-cols-4 lg:grid-cols-4" v-if="isArray(options)">
+       <label
+      v-for="(option, key) in options"
+      :key="key"
+      :class="type"
+      class="mr-6 mb-3 last:mr-0"
+    >
+      <input
+        v-model="computedValue"
+        :type="inputType"
+        :name="name"
+        :value="option.name"
+      >
+      <span class="check" />
+      <span class="control-label">{{ option.name }}</span>
+    </label>
+
+  </div>
+  <div v-else>
+      <label
       v-for="(value, key) in options"
       :key="key"
       :class="type"
@@ -53,5 +78,6 @@ const inputType = computed(() => props.type === 'radio' ? 'radio' : 'checkbox')
       <span class="check" />
       <span class="control-label">{{ value }}</span>
     </label>
+  </div>
   </div>
 </template>

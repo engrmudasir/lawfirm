@@ -202,5 +202,5 @@ const submitPass = async () => {
     </div>
   </main-section>
 
-  <bottom-other-pages-section />
+  <!-- <bottom-other-pages-section /> -->
 </template>

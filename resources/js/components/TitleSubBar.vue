@@ -33,10 +33,10 @@ const darkMode = computed(() => store.state.darkMode)
         {{ title }}
       </h1>
     </div>
-    <jb-button
+    <!-- <jb-button
       :icon="mdiCog"
       :outline="darkMode"
       small
-    />
+    /> -->
   </section>
 </template>

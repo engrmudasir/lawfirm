@@ -17,4 +17,8 @@ class Office extends Model
     {
         return $this->hasMany(User::class);
     }
+    public function questionnaires()
+    {
+        return $this->hasMany(Questionnaire::class);
+    }
 }

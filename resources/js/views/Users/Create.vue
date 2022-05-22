@@ -68,11 +68,6 @@ const form = reactive({
   role_id:'',
   office_id:''
 })
-
-const authUserRole = computed(() => {
-  return store.state.auth.user.roles ? store.state.auth.user.roles[0].name : null
-})
-
 </script>
 
 <template>
@@ -145,7 +140,7 @@ const authUserRole = computed(() => {
           :disabled="busy"
         />
       </field>
-      <field label="Office" v-if="authUserRole=='Super Admin'">
+      <field label="Office" v-role="['Super Admin']">
         <control
           v-model="form.office_id"
           :options="offices"

@@ -13,6 +13,8 @@ use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\Api\OfficeController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\RoleController;
+use App\Http\Controllers\Api\PermissionController;
+use App\Http\Controllers\Api\QuestionnairesController;
 
 
 /*
@@ -55,8 +57,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('offices', OfficeController::class);
     //Users routes
     Route::apiResource('users', UserController::class);
+    //Questionnaires routes
+    Route::apiResource('questionnaires', QuestionnairesController::class);
     //Roles routes
     Route::apiResource('roles', RoleController::class);
+    //Permissions routes
+    Route::apiResource('permissions', PermissionController::class);
 
 
 

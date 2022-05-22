@@ -5,7 +5,12 @@ import Admin from '@/views/Admin.vue'
 import Offices from '@/views/Offices.vue'
 import Roles from '@/views/Roles.vue'
 import Users from '@/views/Users.vue'
+import Questionnaires from '@/views/Questionnaires.vue'
 import Dashboard from '@/views/Dashboard.vue'
+import { useToast, useModal } from 'tailvue'
+
+const $toast = useToast()
+const $modal = useModal()
 
 const routes = [
   {
@@ -16,6 +21,15 @@ const routes = [
     path: '/',
     name: 'home',
     component: Home
+  },
+  {
+    meta: {
+    //   title: 'Home',
+      fullScreen: true
+    },
+    path: '/questionnaire/:id',
+    name: 'Questionnaire',
+    component: () => import(/* webpackChunkName: "questionnaire" */ '@/views/Front/Questionnaire.vue')
   },
   {
     meta: {
@@ -113,7 +127,8 @@ const routes = [
             children: [
                 {
                     meta: {
-                      title: 'Offices'
+                      title: 'Offices',
+                      permissions: ['list offices']
                     },
                     path: '',
                     name: 'List Offices',
@@ -148,12 +163,30 @@ const routes = [
             children: [
                 {
                     meta: {
-                      title: 'Roles'
+                      title: 'Roles',
+                      permissions: ['list roles']
                     },
                     path: '',
                     name: 'List Roles',
                     component: () => import(/* webpackChunkName: "Role List" */ '@/views/Roles/List.vue')
-                }
+                },
+                {
+                    meta: {
+                      title: 'Create Role'
+                    },
+                    path: 'new',
+                    name: 'Create Role',
+                    component: () => import(/* webpackChunkName: "Role Create" */ '@/views/Roles/Create.vue')
+                },
+                {
+                    meta: {
+                      title: 'Update Role'
+                    },
+                    path: ':id/update',
+                    name: 'Update Role',
+                    props: true,
+                    component: () => import(/* webpackChunkName: "Role Update" */ '@/views/Roles/Record.vue')
+                },
             ]
           },
           {
@@ -166,7 +199,8 @@ const routes = [
             children: [
                 {
                     meta: {
-                      title: 'Users'
+                      title: 'Users',
+                      permissions: ['list users']
                     },
                     path: '',
                     name: 'List Users',
@@ -188,6 +222,42 @@ const routes = [
                     name: 'Update User',
                     props: true,
                     component: () => import(/* webpackChunkName: "User Update" */ '@/views/Users/Record.vue')
+                },
+            ]
+          },
+          {
+            meta: {
+              title: 'Questionnaires'
+            },
+            path: 'questionnaires',
+            name: 'questionnaires',
+            component: Questionnaires,
+            children: [
+                {
+                    meta: {
+                      title: 'Questionnaires',
+                      permissions: ['list questionnaires']
+                    },
+                    path: '',
+                    name: 'List Questionnaires',
+                    component: () => import(/* webpackChunkName: "Questionnaires List" */ '@/views/Questionnaires/List.vue')
+                },
+                {
+                    meta: {
+                      title: 'Create Questionnaire'
+                    },
+                    path: 'new',
+                    name: 'Create Questionnaire',
+                    component: () => import(/* webpackChunkName: "Questionnaires Create" */ '@/views/Questionnaires/Create.vue')
+                },
+                {
+                    meta: {
+                      title: 'Update Questionnaire'
+                    },
+                    path: ':id/update',
+                    name: 'Update Questionnaire',
+                    props: true,
+                    component: () => import(/* webpackChunkName: "Questionnaire Update" */ '@/views/Questionnaires/Record.vue')
                 },
             ]
           },
@@ -216,11 +286,26 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     // console.log(to)
     // console.log(store.getters['auth/user'])
+    const roles = store.getters['auth/roles']
+    const permissions = store.getters['auth/permissions']
     if (store.getters['auth/user']) {
       if (to.matched.some(route => route.meta.guard === 'guest')){
         next({ name: 'home' })
       } else {
-        next();
+          if(canAccess(roles, permissions,to)){
+            next();
+          } else {
+            $modal.show({
+                type: 'danger',
+                title: 'Access Denied',
+                body: 'You do not have permissions to access this route',
+                primary: {
+                    label: 'Ok',
+                    theme: 'red',
+                    action: () => false,
+                },
+                })
+          }
       }
     } else {
       if (to.matched.some(route => route.meta.guard === 'auth')){
@@ -230,5 +315,42 @@ router.beforeEach((to, from, next) => {
       }
     }
 })
+
+/**
+ * Check if it matches the current user right by meta.role
+ * @param {String[]} roles
+ * @param {String[]} permissions
+ * @param route
+ */
+ function canAccess(roles, permissions, route) {
+    if (route.meta) {
+        if(_.includes(roles, 'Super Admin')) {
+            /*******
+             * If the Auth user is Super Admin then can access everything
+             */
+
+            return true
+        }
+      let hasRole = true;
+      let hasPermission = true;
+      if (route.meta.roles || route.meta.permissions) {
+        // If it has meta.roles or meta.permissions, accessible = hasRole || permission
+        hasRole = false;
+        hasPermission = false;
+        if (route.meta.roles) {
+          hasRole = roles.some(role => route.meta.roles.includes(role));
+        }
+
+        if (route.meta.permissions) {
+          hasPermission = permissions.some(permission => route.meta.permissions.includes(permission));
+        }
+      }
+
+      return hasRole || hasPermission;
+    }
+
+    // If no meta.roles/meta.permissions inputted - the route should be accessible
+    return true;
+  }
 
 export default router

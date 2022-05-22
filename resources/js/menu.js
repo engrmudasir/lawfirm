@@ -5,7 +5,7 @@ import {
   mdiAccountGroup,
   mdiLock,
   mdiAlertCircle,
-  mdiMonitorShimmer,
+  mdiNfc,
   mdiSquareEditOutline,
   mdiTable,
   mdiViewList,
@@ -25,67 +25,85 @@ export default [
       label: 'Dashboard'
     }
   ],
-  'Examples',
+  'Panel',
   [
     {
       to: '/admin/tables',
       label: 'Tables',
-      icon: mdiTable
+      icon: mdiTable,
+      permissions: ['Template'],
     },
     {
       to: '/admin/forms',
       label: 'Forms',
-      icon: mdiSquareEditOutline
+      icon: mdiSquareEditOutline,
+      permissions: ['Template'],
     },
     {
       to: '/admin/ui',
       label: 'UI',
-      icon: mdiTelevisionGuide
+      icon: mdiTelevisionGuide,
+      permissions: ['Template'],
     },
     {
       to: '/admin/responsive',
       label: 'Responsive',
-      icon: mdiResponsive
+      icon: mdiResponsive,
+      permissions: ['Template'],
     },
     {
       to: '/',
       label: 'Styles',
-      icon: mdiPalette
+      icon: mdiPalette,
+      permissions: ['Template'],
     },
     {
       to: '/admin/profile',
       label: 'Profile',
-      icon: mdiAccountCircle
+      icon: mdiAccountCircle,
+      permissions: ['Template'],
     },
     {
       to: '/login',
       label: 'Login',
-      icon: mdiLock
+      icon: mdiLock,
+      permissions: ['Template'],
     },
     {
       to: '/admin/error',
       label: 'Error',
-      icon: mdiAlertCircle
+      icon: mdiAlertCircle,
+      permissions: ['Template'],
+    },
+    {
+      to: '/admin/questionnaires',
+      label: 'Questionnaires',
+      icon: mdiNfc,
+      permissions: ['list questionnaires']
     },
     {
       to: '/admin/users',
       label: 'Users',
-      icon: mdiAccountGroup
+      icon: mdiAccountGroup,
+      permissions: ['list users']
     },
     {
       label: 'Settings',
       subLabel: 'settings',
       icon: mdiCog,
+      permissions: ['list Offices','list Roles'],
       menu: [
         {
             to: '/admin/offices',
             label: 'Offices',
-            icon: mdiOfficeBuildingMarker
+            icon: mdiOfficeBuildingMarker,
+            permissions: ['list Offices']
         },
         {
             to: '/admin/roles',
             label: 'Roles',
-            icon: mdiOfficeBuildingMarker
+            icon: mdiOfficeBuildingMarker,
+            permissions: ['list Roles']
         }
       ]
     },
@@ -93,6 +111,7 @@ export default [
       label: 'Submenus',
       subLabel: 'Submenus Example',
       icon: mdiViewList,
+      permissions: ['Template'],
       menu: [
         {
           label: 'Sub-item One'

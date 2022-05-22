@@ -6,6 +6,7 @@ import { useToast, useModal } from 'tailvue'
 
 export default function useRoles() {
     const role = ref([])
+    const rolePermissions = ref([])
     const roles = ref([])
 
     const errors = ref('')
@@ -19,6 +20,7 @@ export default function useRoles() {
     const getRoles = async () => {
         console.log('Getting roles')
         try {
+            store.dispatch('asideLoaderToggle', true)
             await store.dispatch('role/getRoles')
             .then((response) =>{
                 // console.log('response')
@@ -29,16 +31,41 @@ export default function useRoles() {
                 console.log('error Getting Roles')
                 console.log(error)
             })
+            store.dispatch('asideLoaderToggle', false)
 
         } catch (e) {
             //Main JS Error Catch
             console.log('Main JS error Getting Roles')
+            store.dispatch('asideLoaderToggle', false)
         }
     }
 
     const getRole = async (id) => {
-        let response = await axios.get(`/api/roles/${id}`)
-        role.value = response.data.data
+        // let response = await axios.get(`/api/roles/${id}`)
+        // role.value = response.data.data
+        // rolePermissions.value = _.map(response.data.data.permissions,'name')
+        store.dispatch('asideLoaderToggle', true)
+
+        console.log('Getting roles')
+        try {
+            await store.dispatch('role/getRole', id)
+            .then((response) =>{
+                role.value = response.data.data
+                rolePermissions.value = _.map(response.data.data.permissions,'name')
+                store.dispatch('asideLoaderToggle', false)
+            })
+            .catch((error) =>{
+                console.log('error Getting Role')
+                console.log(error)
+                store.dispatch('asideLoaderToggle', false)
+            })
+
+        } catch (e) {
+            //Main JS Error Catch
+            console.log('Main JS error Getting Role')
+            store.dispatch('asideLoaderToggle', false)
+        }
+
     }
 
     const storeRole = async (data) => {
@@ -61,6 +88,7 @@ export default function useRoles() {
                 } else {
                     switch(error.response.status){
                         case 500:
+                        case 403:
                             $modal.show({
                                     type: 'danger',
                                     title: 'Server Error',
@@ -109,10 +137,10 @@ export default function useRoles() {
 
     }
 
-    const updateRole = async (id) => {
+    const updateRole = async (data) => {
         errors.value = ''
         try {
-            await store.dispatch('role/updateRole', { id:id, role: role.value })
+            await store.dispatch('role/updateRole', data)
             .then((response) =>{
                 console.log('response Updating Role')
                 // console.log(response)
@@ -121,7 +149,7 @@ export default function useRoles() {
             })
             .catch((error) =>{
                 console.log('error Updating Roles')
-                // console.log(error)
+                console.log(error)
                 if (error.response.status === 422) {
                     for (const key in error.response.data.errors) {
                         errors.value += error.response.data.errors[key][0] + ' ';
@@ -129,6 +157,7 @@ export default function useRoles() {
                 } else {
                     switch(error.response.status){
                         case 500:
+                        case 403:
                             $modal.show({
                                     type: 'danger',
                                     title: 'Server Error',
@@ -171,6 +200,7 @@ export default function useRoles() {
             })
         } catch (e) {
             console.log('Error while updating in JS')
+            console.log(e)
         }
     }
     const destroyRole = async (id) => {
@@ -182,6 +212,7 @@ export default function useRoles() {
     return {
         errors,
         role,
+        rolePermissions,
         roles,
         getRole,
         getRoles,

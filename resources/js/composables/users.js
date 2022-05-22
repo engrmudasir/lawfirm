@@ -62,6 +62,7 @@ export default function useUsers() {
                 } else {
                     switch(error.response.status){
                         case 500:
+                        case 403:
                             $modal.show({
                                     type: 'danger',
                                     title: 'Server Error',
@@ -114,6 +115,7 @@ export default function useUsers() {
                 } else {
                     switch(error.response.status){
                         case 500:
+                        case 403:
                             $modal.show({
                                     type: 'danger',
                                     title: 'Server Error',

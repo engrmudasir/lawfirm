@@ -1,5 +1,5 @@
 <script setup>
-import { reactive,ref } from 'vue'
+import { queuePostFlushCb,getCurrentInstance,reactive,ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { mdiAccount,mdiLogin, mdiAsterisk } from '@mdi/js'
@@ -25,13 +25,17 @@ const router = useRouter()
 const $toast = useToast()
 const $modal = useModal()
 
+
+
 const submit = async () => {
         busy.value = true
+        store.dispatch('asideLoaderToggle', true)
         try {
             await store.dispatch('auth/login' , form)
             .then((response) => {
                 store.dispatch('auth/getUser').then((res) => {
-                    console.log(res)
+                    // console.log('res')
+                    // console.log(res)
                     $toast.show({type: 'success',message: 'Successfully Logged In'});
                     router.push('/admin/dashboard')
                 })
@@ -101,6 +105,7 @@ const submit = async () => {
                                 })
         };
         busy.value = false
+        store.dispatch('asideLoaderToggle', false)
 }
 </script>
 

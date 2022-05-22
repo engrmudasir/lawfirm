@@ -11,6 +11,14 @@ use App\Http\Resources\OfficeResource;
 
 class OfficeController extends Controller
 {
+    function __construct()
+    {
+         $this->middleware('permission:list offices|create offices|update offices|delete offices|list users|create users|update users', ['only' => ['index','show']]);
+         $this->middleware('permission:create offices', ['only' => ['create','store']]);
+         $this->middleware('permission:update offices', ['only' => ['edit','update']]);
+         $this->middleware('permission:delete offices', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *

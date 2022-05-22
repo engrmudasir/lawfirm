@@ -15,7 +15,8 @@ const userName = computed(() => store.state.auth.user ? store.state.auth.user.na
 const last_login_at = computed(() => store.state.auth.user ? store.state.auth.user.last_login_at : null)
 const last_login_ip = computed(() => store.state.auth.user ? store.state.auth.user.last_login_ip : null)
 
-
+const permissions = computed(() => store.state.auth.user ? store.state.auth.user.permissions : null)
+const roles = computed(() => store.state.auth.user ? store.state.auth.user.roles : null)
 const userSwitchVal = ref([])
 </script>
 
@@ -41,6 +42,15 @@ const userSwitchVal = ref([])
             text="Verified"
             type="info"
             :icon="mdiCheckDecagram"
+          />
+        </div>
+        <h1 class="text-2xl" v-if="!roles.includes('Super Admin')">
+          You Can:
+        </h1>
+        <div class="flex justify-center md:block" v-if="!roles.includes('Super Admin')">
+          <pill v-for="(permission,index) in permissions" :key="index"
+            :text="permission"
+            type="primary"
           />
         </div>
       </div>

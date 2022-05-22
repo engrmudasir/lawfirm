@@ -1,5 +1,6 @@
 {
     "/js/app.js": "/js/app.js",
+    "/js/questionnaire.js": "/js/questionnaire.js",
     "/js/login.js": "/js/login.js",
     "/js/tables.js": "/js/tables.js",
     "/js/forms.js": "/js/forms.js",
@@ -11,9 +12,14 @@
     "/js/Office Create.js": "/js/Office Create.js",
     "/js/Office Update.js": "/js/Office Update.js",
     "/js/Role List.js": "/js/Role List.js",
+    "/js/Role Create.js": "/js/Role Create.js",
+    "/js/Role Update.js": "/js/Role Update.js",
     "/js/Users List.js": "/js/Users List.js",
     "/js/User Create.js": "/js/User Create.js",
     "/js/User Update.js": "/js/User Update.js",
+    "/js/Questionnaires List.js": "/js/Questionnaires List.js",
+    "/js/Questionnaires Create.js": "/js/Questionnaires Create.js",
+    "/js/Questionnaire Update.js": "/js/Questionnaire Update.js",
     "/js/pagenotfound.js": "/js/pagenotfound.js",
     "/css/app.css": "/css/app.css"
 }

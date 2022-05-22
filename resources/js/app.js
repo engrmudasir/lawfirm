@@ -4,6 +4,8 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import { darkModeKey, styleKey } from '@/config.js'
+import permission from '@/directive/permission';
+import role from '@/directive/role';
 import { useToast, useModal } from 'tailvue'
 
 import '../css/app.css'
@@ -64,7 +66,12 @@ router.afterEach(to => {
   }
  );
 
-createApp(App)
-.use(store)
-.use(router)
-.mount('#app')
+const app = createApp(App);
+app.use(store)
+app.use(router)
+
+
+app.directive('permission', permission)
+app.directive('role', role)
+
+app.mount('#app')

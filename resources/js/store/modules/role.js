@@ -12,7 +12,12 @@ export default {
         },
         setRole (state, payload) {
             state.role = payload;
-          }
+        },
+        resetToNull ( state, payload ) {
+            state.roles = []
+            state.role = null
+        }
+
     },
     getters: {
         role(state) {
@@ -24,6 +29,7 @@ export default {
     },
     actions: {
         async getRoles({commit}) {
+
             return await axios.get('/api/roles').then((res) => {
                 commit('setRoles', res.data.data);
                 return res
@@ -32,13 +38,16 @@ export default {
             })
         },
         async getRole({commit},payload) {
-            return await axios.patch(`/api/roles/${id}`, payload).then((res) => {
-                commit('setRole', res.data.user);
+
+            return await axios.get(`/api/roles/${payload}`).then((res) => {
+                commit('setRole', res.data.data)
+                return res
             }).catch((err) => {
-                throw err.response
+                throw (err)
             })
         },
         async createRole({ commit }, role) {
+
                 return await axios.post('/api/roles' , role).then((res) => {
                     return res.data
                 }).catch((err) => {
@@ -46,8 +55,9 @@ export default {
                 })
 
         },
-        async updateRole({ commit }, {id, role}) {
-            return await axios.put('/api/roles/' + id, role).then((res) => {
+        async updateRole({ commit }, role) {
+
+            return await axios.put('/api/roles/' + role.id, _.omit(role,"id")).then((res) => {
                 return res.data
             }).catch((err) => {
                 throw(err)

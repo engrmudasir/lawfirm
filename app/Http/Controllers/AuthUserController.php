@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-use App\Http\Resources\UserResource;
+use App\Http\Resources\AuthUserResource;
 
 class AuthUserController extends Controller
 {
@@ -17,6 +17,6 @@ class AuthUserController extends Controller
             'last_login_at' => Carbon::now()->toDateTimeString(),
             'last_login_ip' => $request->getClientIp()
         ]);
-        return response()->json(new UserResource($user));
+        return response()->json(new AuthUserResource($user));
     }
 }

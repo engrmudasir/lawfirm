@@ -6,7 +6,9 @@ import * as styles from '@/styles.js'
 import auth from "./modules/auth.js";
 import office from "./modules/office.js";
 import user from "./modules/user.js";
+import questionnaire from "./modules/questionnaire.js";
 import role from "./modules/role.js";
+import permission from "./modules/permission.js";
 
 export default createStore({
   state: {
@@ -38,6 +40,7 @@ export default createStore({
     /* Aside */
     isAsideMobileExpanded: false,
     isAsideLgActive: false,
+    isLoaderActive: false,
 
     /* Dark mode */
     darkMode: false,
@@ -99,6 +102,9 @@ export default createStore({
     asideLgToggle ({ commit, state }, payload = null) {
       commit('basic', { key: 'isAsideLgActive', value: payload !== null ? payload : !state.isAsideLgActive })
     },
+    asideLoaderToggle ({ commit, state }, payload = null) {
+      commit('basic', { key: 'isLoaderActive', value: payload !== null ? payload : !state.isLoaderActive })
+    },
 
     fullScreenToggle ({ commit, state }, value) {
       commit('basic', { key: 'isFullScreen', value })
@@ -138,8 +144,10 @@ export default createStore({
   modules: {
     auth,
     user,
+    questionnaire,
     office,
-    role
+    role,
+    permission
   },
   plugins: [createPersistedState()]
 })

@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
         $user = User::whereEmail('super@lawfirm.com')->first();
-        $user->assignRole('Super Admin');
+        $user->assignRole($role_super_admin);
 
     }
 }

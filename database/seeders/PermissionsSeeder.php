@@ -37,5 +37,10 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'create offices']);
         Permission::create(['name' => 'update offices']);
         Permission::create(['name' => 'delete offices']);
+        // questionnaires permissions
+        Permission::create(['name' => 'list questionnaires']);
+        Permission::create(['name' => 'create questionnaires']);
+        Permission::create(['name' => 'update questionnaires']);
+        Permission::create(['name' => 'delete questionnaires']);
     }
 }

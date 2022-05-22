@@ -38,6 +38,7 @@ const itemTo = computed(() => props.item.to || null)
 const itemHref = computed(() => props.item.href || null)
 
 const itemTarget = computed(() => componentIs.value === 'a' && props.item.target ? props.item.target : null)
+const permissions = computed(() => props.item.permissions ? props.item.permissions : '')
 
 const menuClick = event => {
   emit('menu-click', event, props.item)
@@ -59,6 +60,7 @@ const menuClick = event => {
       class="flex cursor-pointer dark:hover:bg-gray-700/50"
       :class="[ asideMenuItemStyle, isSubmenuList ? 'p-3 text-sm' : 'py-2' ]"
       @click="menuClick"
+      v-permission="item.permissions"
     >
       <icon
         v-if="item.icon"

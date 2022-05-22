@@ -1,4 +1,5 @@
 import axios from "axios";
+import store from '@/store';
 
 export default {
     namespaced: true,
@@ -7,6 +8,8 @@ export default {
         userName: null,
         userEmail: null,
         userAvatar: null,
+        roles: [],
+        permissions: [],
     },
     mutations: {
         setUser(state, payload) {
@@ -24,7 +27,13 @@ export default {
                     state.userAvatar = payload.avatar
                 }
             }
-          }
+          },
+          SET_ROLES: (state, roles) => {
+            state.roles = roles;
+          },
+          SET_PERMISSIONS: (state, permissions) => {
+            state.permissions = permissions;
+          },
     },
     getters: {
         user(state) {
@@ -37,20 +46,26 @@ export default {
         id(state) {
             if (state.user) return state.user.id
             return null
-        }
+        },
+        permissions: state => state.permissions,
+        roles: state => state.roles,
     },
     actions: {
         async login({ dispatch }, payload) {
             try {
+                // store.dispatch('asideLoaderToggle', true)
                 await axios.get('/sanctum/csrf-cookie');
 
-                await axios.post('/api/login', payload).then((response) => {
+               return await axios.post('/api/login', payload).then((response) => {
                     dispatch('getUser')
+                    // store.dispatch('asideLoaderToggle', false)
                     return response
                 }).catch((err) => {
+                    // store.dispatch('asideLoaderToggle', false)
                     throw(err)
                 });
             } catch (e) {
+                // store.dispatch('asideLoaderToggle', false)
                 throw e
             }
 
@@ -79,10 +94,15 @@ export default {
 
         },
         async getUser({commit}) {
-            await axios.get('/api/user').then((res) => {
+            return await axios.get('/api/user').then((res) => {
+
                 console.log(res.data)
+                const { roles, permissions } = res.data
                 commit('setUser', res.data);
                 commit('user', res.data);
+                commit('SET_ROLES', roles)
+                commit('SET_PERMISSIONS', permissions)
+                return res.data
             }).catch((err) => {
                 throw(err)
             })

@@ -3,6 +3,7 @@ import { ref, onMounted, computed, watch } from 'vue'
 import moment from 'moment'
 import { useStore } from 'vuex'
 import {  mdiLeadPencil, mdiEye, mdiTrashCan, mdiMonitorCellphone, mdiAccountMultiple, mdiTableBorder, mdiTableOff, mdiPlus } from '@mdi/js'
+// import permission from '@/directive/permission'; // Permission directive (v-permission)
 import MainSection from '@/components/MainSection.vue'
 import Notification from '@/components/Notification.vue'
 import CardComponent from '@/components/CardComponent.vue'
@@ -124,10 +125,6 @@ const dateFormat = (date) => {
     return moment(date).format(" MMMM Do, YYYY")
 }
 
-const authUserRole = computed(() => {
-  return store.state.auth.user.roles ? store.state.auth.user.roles[0].name : null
-})
-
 </script>
 
 <template>
@@ -136,6 +133,7 @@ const authUserRole = computed(() => {
   buttonLabel="Add New"
   :buttonIcon="mdiPlus"
   buttonTo="/admin/users/new"
+  v-permission="['create users']"
   >Users List</hero-bar>
   <main-section>
     <card-component
@@ -186,7 +184,7 @@ const authUserRole = computed(() => {
         <th>Name</th>
         <th>Email</th>
         <th>Role</th>
-        <th v-if="authUserRole=='Super Admin'">Office</th>
+        <th v-role="['Super Admin']">Office</th>
          <!-- <th>Progress</th> -->
         <th>Created</th>
         <th />
@@ -217,7 +215,7 @@ const authUserRole = computed(() => {
         <td data-label="Role">
           {{user.roles[0] ? user.roles[0].name : ''}}
         </td>
-        <td data-label="Office" v-if="authUserRole=='Super Admin'">
+        <td data-label="Office" v-role="['Super Admin']">
           {{ user.office ? user.office.name : ''}}
         </td>
         <!--
@@ -248,6 +246,7 @@ const authUserRole = computed(() => {
               :icon="mdiLeadPencil"
               small
               :to="{ name: 'Update User', params: { id: user.id } }"
+              v-permission="['update users']"
             />
             <jb-button
               color="info"
@@ -260,6 +259,7 @@ const authUserRole = computed(() => {
               :icon="mdiTrashCan"
               small
               @click="deleteUser(user.id)"
+              v-permission="['delete users']"
             />
           </jb-buttons>
         </td>
