@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\QuestionnairesController;
+use App\Http\Controllers\Api\Front\FrontQuestionnairesController;
 
 
 /*
@@ -37,6 +38,9 @@ Route::middleware('guest')->group(function () {
     // guest verification (temporary auth)
     // Route::post('/verify-email/{id}/{hash}', [VerificationController::class, 'verify'])->name('verify');
     // Route::post('/verify-resend', [VerificationController::class, 'resend']);
+
+    //Questionnaires routes
+    Route::put('/front/questionnaires/{questionnaire}', [FrontQuestionnairesController::class,'update'])->name('update');
 });
 Route::post('/verify-email/{id}/{hash}', [VerificationController::class, 'verify'])->name('verify');
 Route::post('/verify-resend', [VerificationController::class, 'resend']);

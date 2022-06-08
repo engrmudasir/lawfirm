@@ -7,6 +7,7 @@ import auth from "./modules/auth.js";
 import office from "./modules/office.js";
 import user from "./modules/user.js";
 import questionnaire from "./modules/questionnaire.js";
+import questionnairefront from "./modules/questionnairefront.js";
 import role from "./modules/role.js";
 import permission from "./modules/permission.js";
 
@@ -145,6 +146,7 @@ export default createStore({
     auth,
     user,
     questionnaire,
+    questionnairefront,
     office,
     role,
     permission

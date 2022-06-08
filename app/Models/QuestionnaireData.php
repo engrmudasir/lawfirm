@@ -5,23 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Scopes\OfficeScope;
-class Questionnaire extends Model
+class QuestionnaireData extends Model
 {
     use HasFactory;
 
+    protected $table = 'questionnaires_data';
     protected $guarded = ['id'];
+
 
     protected static function boot()
     {
         parent::boot();
         static::addGlobalScope(new OfficeScope);
     }
-    public function office()
+    public function questionnaire()
     {
-        return $this->belongsTo(Office::class);
-    }
-    public function questionnairedata()
-    {
-        return $this->hasMany(QuestionnaireData::class);
+        return $this->belongsTo(Questionnaire::class);
     }
 }
